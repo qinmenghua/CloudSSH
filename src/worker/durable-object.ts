@@ -12,13 +12,8 @@ export class SSHSessionDO {
   }
 
   async fetch(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-
-    if (url.pathname === '/websocket') {
-      return this.handleWebSocketUpgrade(request);
-    }
-
-    return new Response('SSH Session DO', { status: 200 });
+    console.log('DO fetch called:', request.url);
+    return this.handleWebSocketUpgrade(request);
   }
 
   private async handleWebSocketUpgrade(request: Request): Promise<Response> {
