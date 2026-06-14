@@ -29,6 +29,9 @@
 
 > 想象一下，随时随地打开浏览器，就能以极具科技感的赛博朋克 UI 连接你的服务器，无需安装任何 SSH 客户端。
 
+![Demo 1](./demo1.png)
+![Demo 2](./demo2.png)
+
 ## 目录
 
 - [核心优势](#highlights)
@@ -96,6 +99,15 @@ flowchart TB
 
 ### 部署步骤
 
+#### 方式一：通过 GitHub 绑定自动部署
+
+1. **Fork 本仓库** 到你的 GitHub 账号。
+2. **修改域名**：在进行部署前，请先将 `wrangler.toml` 中的自定义域名改成你自己的域名（要求：域名需要先在 Cloudflare 中完成注册或接入）。
+3. **一键部署**：登录 Cloudflare，进入 Workers & Pages 绑定你的 GitHub 账号，选择刚才 Fork 的仓库进行应用创建。
+4. **填写构建命令**：在部署设置中，请务必将“构建命令”（Build command）填写为 `cd frontend && npm install && npm run build`，然后点击保存并部署。
+
+#### 方式二：本地命令行部署
+
 1. **克隆仓库**
    ```bash
    git clone https://github.com/newbietan/CloudSSH.git
@@ -135,4 +147,8 @@ npm run dev
 <a id="license"></a>
 ## 开源协议
 
-本项目基于 [MIT License](LICENSE) 协议开源。欢迎提交 Issue 和 Pull Request 共建社区。
+本项目基于 [MIT License](LICENSE) 协议开源。
+
+**特别声明**：本项目允许商业使用及二次修改，但必须明确注明原作者。
+
+欢迎提交 Issue 和 Pull Request 共建社区。如果这个项目对你有帮助，恳求大家给本项目点个 ⭐ Star 支持一下，非常感谢！

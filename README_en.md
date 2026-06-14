@@ -29,6 +29,9 @@
 
 > Imagine opening your browser anytime, anywhere, and connecting to your server with a highly futuristic cyberpunk UI, without installing any SSH client.
 
+![Demo 1](./demo1.png)
+![Demo 2](./demo2.png)
+
 ## Table of Contents
 
 - [Highlights](#highlights)
@@ -96,6 +99,15 @@ flowchart TB
 
 ### Steps
 
+#### Method 1: Deploy via GitHub Integration
+
+1. **Fork this repository** to your GitHub account.
+2. **Configure Domain**: Before deploying, you must modify the custom domain in `wrangler.toml` to your own domain (Note: The domain must be registered or active in Cloudflare beforehand).
+3. **Setup Deployment**: Log in to the Cloudflare dashboard, go to Workers & Pages to connect your GitHub account, and select the forked repository.
+4. **Build Command**: During the deployment configuration, make sure to enter `cd frontend && npm install && npm run build` as the Build command, then deploy with one click.
+
+#### Method 2: Local CLI Deployment
+
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/newbietan/CloudSSH.git
@@ -135,4 +147,8 @@ This command starts Wrangler's local development environment server.
 <a id="license"></a>
 ## License
 
-This project is open-sourced under the [MIT License](LICENSE). Issues and Pull Requests are welcome to help build the community.
+This project is open-sourced under the [MIT License](LICENSE). 
+
+**Special Notice**: Commercial use and modifications are permitted, but you must clearly attribute the original author.
+
+Issues and Pull Requests are welcome to help build the community. If you find this project helpful, please consider giving it a ⭐ Star. Thank you very much for your support!
