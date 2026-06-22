@@ -128,6 +128,7 @@ export class SSHTerminal {
   }
 
   async connect(config: SSHConnectionConfig): Promise<void> {
+    this.resetActiveConnection();
     this.lastConfig = config;
     this.terminal.clear();
 
@@ -175,6 +176,7 @@ export class SSHTerminal {
    * 服务器已通过 token 获取凭据，无需前端发送
    */
   connectWithWebSocket(ws: WebSocket): void {
+    this.resetActiveConnection();
     this.lastConfig = null;
     this.ws = ws;
     this.terminal.clear();
@@ -311,10 +313,32 @@ export class SSHTerminal {
     }
   }
 
-  private scheduleReconnect(): void {
+  private disposeConnectionDisposables(): void {
+    this.disposables.forEach(d => d.dispose());
+    this.disposables = [];
+  }
+
+  private clearReconnectTimeout(): void {
     if (this.reconnectTimeout) {
       clearTimeout(this.reconnectTimeout);
+      this.reconnectTimeout = null;
     }
+  }
+
+  private resetActiveConnection(): void {
+    this.stopHeartbeat();
+    this.clearReconnectTimeout();
+    this.disposeConnectionDisposables();
+
+    if (this.ws && this.ws.readyState !== WebSocket.CLOSED && this.ws.readyState !== WebSocket.CLOSING) {
+      this.ws.close(1000);
+    }
+    this.ws = null;
+    this.trzszFilter = null;
+  }
+
+  private scheduleReconnect(): void {
+    this.clearReconnectTimeout();
     
     this.reconnectAttempts++;
     const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000);
@@ -322,6 +346,7 @@ export class SSHTerminal {
     this.terminal.writeln(`\x1b[33m[*] Reconnecting in ${delay / 1000}s (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})...\x1b[0m`);
     
     this.reconnectTimeout = setTimeout(async () => {
+      this.reconnectTimeout = null;
       if (this.lastConfig) {
         this.terminal.writeln('\x1b[32m[+] Reconnecting...\x1b[0m');
         try {
@@ -334,17 +359,8 @@ export class SSHTerminal {
   }
 
   disconnect(): void {
-    this.stopHeartbeat();
-    if (this.reconnectTimeout) {
-      clearTimeout(this.reconnectTimeout);
-      this.reconnectTimeout = null;
-    }
     this.reconnectAttempts = this.maxReconnectAttempts;
-    this.ws?.close(1000);
-    this.ws = null;
-    this.trzszFilter = null;
-    this.disposables.forEach(d => d.dispose());
-    this.disposables = [];
+    this.resetActiveConnection();
     this.lastConfig = null;
     this.terminal.clear();
   }

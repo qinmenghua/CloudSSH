@@ -109,7 +109,7 @@ flowchart TB
 1. **Fork this repository** to your GitHub account.
 2. **Configure Domain**: Before deploying, you must modify the custom domain in `wrangler.toml` to your own domain (Note: The domain must be registered or active in Cloudflare beforehand).
 3. **Setup Deployment**: Log in to the Cloudflare dashboard, go to Workers & Pages to connect your GitHub account, and select the forked repository.
-4. **Build Command**: During the deployment configuration, make sure to enter `npm install && npm run build:frontend` as the Build command, then deploy with one click (the build output directory can be left blank).
+4. **Build Command**: During the deployment configuration, make sure to enter `npm install -g pnpm && pnpm install && pnpm run build:frontend` as the Build command, then deploy with one click (the build output directory can be left blank).
 
 #### Method 2: Local CLI Deployment
 
@@ -121,7 +121,8 @@ flowchart TB
 
 2. **Install Dependencies**
    ```bash
-   npm install
+   npm install -g pnpm
+   pnpm install
    ```
 
 3. **Login to Cloudflare**
@@ -131,7 +132,7 @@ flowchart TB
 
 4. **One-Click Deploy**
    ```bash
-   npm run deploy
+   pnpm run deploy
    ```
 
 Once deployed, Wrangler will output your Worker URL. Open that URL in your browser to start using your Web SSH terminal.
@@ -180,7 +181,7 @@ With GitHub OAuth enabled, users can log in with their GitHub account and save/m
 
 > **Note**: Server credentials (passwords/private keys) are encrypted with AES-256-GCM before storage. The local encryption key is automatically generated and safely stored in the database (you can also manually override it by setting `SESSION_SECRET` in environment variables). During connection, credentials never pass through the frontend — they are securely transmitted via a one-time-token mechanism.
 
-> **Important**: Enabling this feature for the first time requires a clean deployment (delete the old Worker first, then redeploy) to initialize the new Durable Object. Use `npx wrangler delete cloudssh` to remove the old Worker, then run `npm run deploy` to redeploy.
+> **Important**: Enabling this feature for the first time requires a clean deployment (delete the old Worker first, then redeploy) to initialize the new Durable Object. Use `npx wrangler delete cloudssh` to remove the old Worker, then run `pnpm run deploy` to redeploy.
 
 <a id="development"></a>
 ## Development
@@ -191,7 +192,7 @@ This project consists of two parts:
 
 For local development, you can run:
 ```bash
-npm run dev
+pnpm run dev
 ```
 This command starts Wrangler's local development environment server.
 

@@ -109,7 +109,7 @@ flowchart TB
 1. **Fork 本仓库** 到你的 GitHub 账号。
 2. **修改域名**：在进行部署前，请先将 `wrangler.toml` 中的自定义域名改成你自己的域名（要求：域名需要先在 Cloudflare 中完成注册或接入）。
 3. **一键部署**：登录 Cloudflare，进入 Workers & Pages 绑定你的 GitHub 账号，选择刚才 Fork 的仓库进行应用创建。
-4. **填写构建命令**：在部署设置中，请务必将“构建命令”（Build command）填写为 `npm install && npm run build:frontend`，然后点击保存并部署（无需填写构建输出目录）。
+4. **填写构建命令**：在部署设置中，请务必将“构建命令”（Build command）填写为 `npm install -g pnpm && pnpm install && pnpm run build:frontend`，然后点击保存并部署（无需填写构建输出目录）。
 
 #### 方式二：本地命令行部署
 
@@ -121,7 +121,8 @@ flowchart TB
 
 2. **安装依赖**
    ```bash
-   npm install
+   npm install -g pnpm
+   pnpm install
    ```
 
 3. **登录 Cloudflare**
@@ -131,7 +132,7 @@ flowchart TB
 
 4. **一键部署**
    ```bash
-   npm run deploy
+   pnpm run deploy
    ```
 
 部署完成后，Wrangler 会输出你的 Worker URL。打开浏览器访问该 URL，即可开始使用你的 Web SSH 终端。
@@ -180,7 +181,7 @@ flowchart TB
 
 > **说明**：服务器凭据（密码/私钥）在数据库中使用 AES-256-GCM 加密存储，本地加密密钥将自动生成并安全地存储在数据库中（也可在环境变量中手动设置 `SESSION_SECRET` 来指定）。连接时凭据不经过前端，通过 one-time-token 机制安全传递。
 
-> **注意**：首次启用此功能需要从零部署（删除旧 Worker 后重新部署），因为需要初始化新的 Durable Object。可通过 `npx wrangler delete cloudssh` 删除旧 Worker，然后运行 `npm run deploy` 重新部署。
+> **注意**：首次启用此功能需要从零部署（删除旧 Worker 后重新部署），因为需要初始化新的 Durable Object。可通过 `npx wrangler delete cloudssh` 删除旧 Worker，然后运行 `pnpm run deploy` 重新部署。
 
 <a id="development"></a>
 ## 开发说明
@@ -191,7 +192,7 @@ flowchart TB
 
 在本地开发时，可以运行：
 ```bash
-npm run dev
+pnpm run dev
 ```
 此命令将启动 Wrangler 的本地开发环境服务器。
 
