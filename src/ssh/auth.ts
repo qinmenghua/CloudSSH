@@ -222,20 +222,20 @@ export class SSHAuth {
     const pubKeyType = new TextDecoder().decode(pubSection.slice(pko, pko + pubKeyTypeLen)); pko += pubKeyTypeLen;
     if (pubKeyType !== 'ssh-rsa') throw new Error(`不支持的密钥类型: ${pubKeyType}`);
 
-    const eLen = readUint32(pubSection, pko); pko += 4;
-    const e = pubSection.slice(pko, pko + eLen); pko += eLen;
-    const nLen = readUint32(pubSection, pko); pko += 4;
-    const n = pubSection.slice(pko, pko + nLen); pko += nLen;
-
-    const privSecLen = readUint32(raw, offset); offset += 4;
-    const privSection = raw.slice(offset, offset + privSecLen);
-
     // Parse private section
     const stripLeadingZero = (v: Uint8Array) => {
       let s = 0;
       while (s < v.length - 1 && v[s] === 0) s++;
       return v.slice(s);
     };
+
+    const eLen = readUint32(pubSection, pko); pko += 4;
+    const e = stripLeadingZero(pubSection.slice(pko, pko + eLen)); pko += eLen;
+    const nLen = readUint32(pubSection, pko); pko += 4;
+    const n = stripLeadingZero(pubSection.slice(pko, pko + nLen)); pko += nLen;
+
+    const privSecLen = readUint32(raw, offset); offset += 4;
+    const privSection = raw.slice(offset, offset + privSecLen);
 
     let po = 0;
     po += 4; // checkint1
