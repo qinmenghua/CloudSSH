@@ -263,7 +263,7 @@ export class SSHAuth {
 
     const signingKey = await crypto.subtle.importKey(
       'pkcs8', pkcs8Der,
-      { name: 'RSA-PKCS1-v1_5', hash: 'SHA-1' },
+      { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-1' },
       false, ['sign']
     );
 
@@ -362,7 +362,7 @@ export class SSHAuth {
 
     const signingKey = await crypto.subtle.importKey(
       'pkcs8', pkcs8Der,
-      { name: 'RSA-PKCS1-v1_5', hash: 'SHA-1' },
+      { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-1' },
       false, ['sign']
     );
 
